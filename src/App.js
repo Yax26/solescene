@@ -19,7 +19,7 @@ function Header() {
         <input type="search" placeholder="Search..." />
       </nav>
       <div class="user-cart">
-        <div class="cart">Cart</div>
+        <div class="cart">🛒</div>
         <div class="user">User</div>
       </div>
     </header>
@@ -29,7 +29,13 @@ function Header() {
 function Body() {
   return (
     <main>
-      <div class="filters">Filters</div>
+      <div class="filters">
+        <label for="sort-by">Sort by:</label>
+        <select id="sort-by">
+          <option value="price">Sort by Price</option>
+          <option value="name">Sort by Name</option>
+        </select>
+      </div>
       <section class="products">
         <article class="product">
           <div class="product-image">Image</div>
