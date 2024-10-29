@@ -154,3 +154,13 @@ footer {
   padding: 20px;
   width: 100%;
 }
+
+.user_dropdown {
+  background-color: transparent;
+  color: white;
+  border: solid white 0px;
+}
+
+.options_color {
+  color: black;
+}
