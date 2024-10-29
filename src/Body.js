@@ -1,7 +1,7 @@
-export function Body({ products }) {
+export function Body({ products, cart, setCart }) {
   return (
     <main>
-      <div class="filters">
+      <div className="filters">
         <label for="sort-by">Sort by:</label>
         <select id="sort-by">
           <option value="price">Sort by Price</option>
@@ -9,24 +9,35 @@ export function Body({ products }) {
         </select>
       </div>
 
-      {/* *********************products **************************/}
-      <section class="products">
-        <article class="product">
-          <div class="product-image">Image</div>
-          <div class="product-details">
-            <p class="price">Price</p>
-            <button>Add to Cart</button>
-          </div>
-        </article>
-        <article class="product">
-          <div class="product-image">Image</div>
-          <div class="product-details">
-            <p class="price">Price</p>
-            <button>Add to Cart</button>
-          </div>
-        </article>
-      </section>
-      <aside class="coupons">Coupons</aside>
+      {/* *********************products**************************/}
+      <Products products={products} cart={cart} setCart={setCart} />
+      <aside className="coupons">Coupons</aside>
     </main>
+  );
+}
+
+function Products({ products, cart, setCart }) {
+  return (
+    <section class="products">
+      {products.map((product) => {
+        return (
+          <article className="product">
+            <div className="product-image">{product.image}</div>
+            <div className="product-details">
+              <span>{product.name}</span>
+              <p className="price">{product.price}$</p>
+              <button
+                onClick={() => {
+                  setCart([...cart, product]);
+                }}
+              >
+                {console.log(cart, "hello")}
+                Add to Cart
+              </button>
+            </div>
+          </article>
+        );
+      })}
+    </section>
   );
 }

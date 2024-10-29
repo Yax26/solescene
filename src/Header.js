@@ -1,12 +1,7 @@
-import { useState } from "react";
 import Constants from "./Constants.js";
 
-export function Header() {
-  console.log(Constants);
-  const [user, SetSelectedUser] = useState(0);
-
+export function Header({ user, SetSelectedUser }) {
   function handleSetSelectedUser(event) {
-    console.log(event.target.value);
     SetSelectedUser(event.target.value);
   }
 
