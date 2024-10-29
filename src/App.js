@@ -1,63 +1,40 @@
+import { Body } from "./Body";
+import { Footer } from "./Footer";
+import { Header } from "./Header";
 import "./index.css";
 
 function App() {
+  const users = [{ name: "yax" }, { name: "sarthak" }, { name: "dhruvil" }];
+  const products = [
+    {
+      id: 1,
+      name: "Jordan 1",
+      image: "",
+    },
+    {
+      id: 2,
+      name: "Nike air force",
+      image: "",
+    },
+    {
+      id: 3,
+      name: "New balance 7090",
+      image: "",
+    },
+    {
+      id: 4,
+      name: "Adidas Yeezy",
+      image: "",
+    },
+  ];
+
   return (
     <div className="App">
-      <Header />
-      <Body />
+      <Header users={users} products={products} />
+      <Body products={products} />
       <Footer />
     </div>
   );
 }
 
-function Header() {
-  return (
-    <header>
-      <div class="logo">LOGO</div>
-      <nav>
-        <a href="#">Home</a>
-        <input type="search" placeholder="Search..." />
-      </nav>
-      <div class="user-cart">
-        <div class="cart">🛒</div>
-        <div class="user">User</div>
-      </div>
-    </header>
-  );
-}
-
-function Body() {
-  return (
-    <main>
-      <div class="filters">
-        <label for="sort-by">Sort by:</label>
-        <select id="sort-by">
-          <option value="price">Sort by Price</option>
-          <option value="name">Sort by Name</option>
-        </select>
-      </div>
-      <section class="products">
-        <article class="product">
-          <div class="product-image">Image</div>
-          <div class="product-details">
-            <p class="price">Price</p>
-            <button>Add to Cart</button>
-          </div>
-        </article>
-        <article class="product">
-          <div class="product-image">Image</div>
-          <div class="product-details">
-            <p class="price">Price</p>
-            <button>Add to Cart</button>
-          </div>
-        </article>
-      </section>
-      <aside class="coupons">Coupons</aside>
-    </main>
-  );
-}
-
-function Footer() {
-  return <footer>Footer content here.</footer>;
-}
 export default App;
