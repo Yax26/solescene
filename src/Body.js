@@ -1,32 +1,70 @@
-export function Body({ products }) {
+export function Body({ products, cart, setCart, user, letters }) {
   return (
-    <main>
-      <div class="filters">
-        <label for="sort-by">Sort by:</label>
-        <select id="sort-by">
-          <option value="price">Sort by Price</option>
-          <option value="name">Sort by Name</option>
-        </select>
-      </div>
+    <div>
+      <section className="products">
+        {products
+          .filter(
+            (product) =>
+              (product.name.toLowerCase() || null).indexOf(
+                letters != null && letters.toLowerCase()
+              ) === 0
+          )
+          .map((product) => (
+            <Products
+              key={product.id}
+              product={product}
+              user={user}
+              cart={cart}
+              setCart={setCart}
+            />
+          ))}
 
-      {/* *********************products **************************/}
-      <section class="products">
-        <article class="product">
-          <div class="product-image">Image</div>
-          <div class="product-details">
-            <p class="price">Price</p>
-            <button>Add to Cart</button>
-          </div>
-        </article>
-        <article class="product">
-          <div class="product-image">Image</div>
-          <div class="product-details">
-            <p class="price">Price</p>
-            <button>Add to Cart</button>
-          </div>
-        </article>
+        {products
+          .filter(
+            (product) =>
+              (product.name.toLowerCase() || null).indexOf(
+                letters != null && letters.toLowerCase()
+              ) > 0
+          )
+          .map((product) => (
+            <Products
+              key={product.id}
+              product={product}
+              user={user}
+              cart={cart}
+              setCart={setCart}
+            />
+          ))}
       </section>
-      <aside class="coupons">Coupons</aside>
-    </main>
+    </div>
+  );
+}
+
+function Products({ product, user, cart, setCart }) {
+  return (
+    <div>
+      <article className="product">
+        <div className="product-image">
+          <img src={product.image} alt={product.name} />
+        </div>
+        <div className="product-details">
+          <p className="price">${product.price}</p>
+          <button
+            onClick={() => {
+              localStorage.setItem(
+                `cart_${user}`,
+                JSON.stringify([...cart, product])
+              );
+
+              // state : Cart *used
+
+              setCart([...cart, product]);
+            }}
+          >
+            Add to Cart
+          </button>
+        </div>
+      </article>
+    </div>
   );
 }
