@@ -1,9 +1,17 @@
-import Constants from "./Constants.js";
+export function Header({ allUsers, user, SetSelectedUser, setCart }) {
+  const handleSetSelectedUser = (event) => {
+    const newUser = event.target.value;
 
-export function Header({ user, SetSelectedUser }) {
-  function handleSetSelectedUser(event) {
-    SetSelectedUser(event.target.value);
-  }
+    // state : User *used
+    SetSelectedUser(newUser);
+
+    const stored_cart = JSON.parse(localStorage.getItem(`cart_${newUser}`))
+      ? JSON.parse(localStorage.getItem(`cart_${newUser}`))
+      : [];
+
+    // state : Cart *used
+    setCart(stored_cart);
+  };
 
   return (
     <header>
@@ -14,24 +22,31 @@ export function Header({ user, SetSelectedUser }) {
       </nav>
       <div className="user-cart">
         {/* <Cart handleSetSelectedUser={handleSetSelectedUser} /> */}
-        <SelectUser user={user} handleSetSelectedUser={handleSetSelectedUser} />
+        <SelectUser
+          allUsers={allUsers}
+          user={user}
+          handleSetSelectedUser={handleSetSelectedUser}
+        />
       </div>
     </header>
   );
 }
 
-function SelectUser({ handleSetSelectedUser, user }) {
+function SelectUser({ allUsers, handleSetSelectedUser, user }) {
   return (
     <div className="user">
       <select
         className="user_dropdown"
-        name="current_user"
         value={user}
         onChange={handleSetSelectedUser}
       >
-        {Constants.users.map((user, index) => (
-          <option key={index} value={index} className="options_color">
-            {Constants.users[index].name}
+        {allUsers.map((current_user) => (
+          <option
+            key={current_user}
+            value={current_user}
+            className="options_color"
+          >
+            {current_user}
           </option>
         ))}
       </select>

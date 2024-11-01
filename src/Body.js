@@ -1,4 +1,4 @@
-export function Body({ products, cart, setCart }) {
+export function Body({ products, cart, setCart, user }) {
   return (
     <main>
       <div className="filters">
@@ -10,28 +10,36 @@ export function Body({ products, cart, setCart }) {
       </div>
 
       {/* *********************products**************************/}
-      <Products products={products} cart={cart} setCart={setCart} />
+      <Products products={products} cart={cart} setCart={setCart} user={user} />
       <aside className="coupons">Coupons</aside>
     </main>
   );
 }
 
-function Products({ products, cart, setCart }) {
+function Products({ products, cart, setCart, user }) {
   return (
-    <section class="products">
+    <section className="products">
       {products.map((product) => {
         return (
           <article className="product">
             <div className="product-image">{product.image}</div>
+
             <div className="product-details">
               <span>{product.name}</span>
               <p className="price">{product.price}$</p>
+
               <button
                 onClick={() => {
+                  localStorage.setItem(
+                    `cart_${user}`,
+                    JSON.stringify([...cart, product])
+                  );
+
+                  // state : Cart *used
+
                   setCart([...cart, product]);
                 }}
               >
-                {console.log(cart, "hello")}
                 Add to Cart
               </button>
             </div>

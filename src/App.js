@@ -5,7 +5,8 @@ import "./index.css";
 import { useState } from "react";
 
 function App() {
-  const users = [{ name: "yax" }, { name: "sarthak" }, { name: "dhruvil" }];
+  const allUsers = ["yax", "sarthak", "dhruvil"];
+
   const products = [
     {
       id: 1,
@@ -34,7 +35,7 @@ function App() {
   ];
 
   // state : user
-  const [user, SetSelectedUser] = useState(0);
+  const [user, SetSelectedUser] = useState("yax");
 
   // state : cart
   const [cart, setCart] = useState([]);
@@ -42,10 +43,10 @@ function App() {
   return (
     <div className="App">
       <Header
-        users={users}
-        products={products}
+        allUsers={allUsers}
         user={user}
         SetSelectedUser={SetSelectedUser}
+        setCart={setCart}
       />
       <Body products={products} cart={cart} setCart={setCart} user={user} />
       <Footer />
