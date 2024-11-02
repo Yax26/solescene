@@ -1,4 +1,10 @@
 export function Body({ products, cart, setCart, user }) {
+  const stored_cart = JSON.parse(localStorage.getItem(`cart_${user}`))
+    ? JSON.parse(localStorage.getItem(`cart_${user}`))
+    : [];
+
+  // state : Cart *used
+  if (cart.length === 0 && stored_cart.length !== 0) setCart(stored_cart);
   return (
     <main>
       <div className="filters">
