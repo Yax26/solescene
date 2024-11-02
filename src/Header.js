@@ -1,4 +1,13 @@
-export function Header({ allUsers, user, SetSelectedUser, setCart }) {
+import "./index.css";
+
+export function Header({
+  setLetters,
+  letters,
+  allUsers,
+  user,
+  SetSelectedUser,
+  setCart,
+}) {
   const handleSetSelectedUser = (event) => {
     const newUser = event.target.value;
 
@@ -18,10 +27,9 @@ export function Header({ allUsers, user, SetSelectedUser, setCart }) {
       <div className="logo">LOGO</div>
       <nav>
         <a href="#">Home</a>
-        <input type="search" placeholder="Search..." />
+        <Search setLetters={setLetters} letters={letters} />
       </nav>
       <div className="user-cart">
-        {/* <Cart handleSetSelectedUser={handleSetSelectedUser} /> */}
         <SelectUser
           allUsers={allUsers}
           user={user}
@@ -29,6 +37,21 @@ export function Header({ allUsers, user, SetSelectedUser, setCart }) {
         />
       </div>
     </header>
+  );
+}
+
+function Search({ setLetters, letters }) {
+  return (
+    <input
+      type="search"
+      placeholder="Search..."
+      value={letters || ""}
+      onChange={(e) => {
+        // state : letter
+        setLetters(e.target.value);
+        console.log(e.target.value);
+      }}
+    />
   );
 }
 
@@ -51,14 +74,5 @@ function SelectUser({ allUsers, handleSetSelectedUser, user }) {
         ))}
       </select>
     </div>
-  );
-}
-
-function Cart() {
-  return (
-    // <div className="cart" onClick={LoadCart()}>
-    //   🛒
-    // </div>
-    ""
   );
 }

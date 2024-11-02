@@ -1,4 +1,4 @@
-export function Body({ products, cart, setCart, user }) {
+export function Body({ products, cart, setCart, user, letters }) {
   const stored_cart = JSON.parse(localStorage.getItem(`cart_${user}`))
     ? JSON.parse(localStorage.getItem(`cart_${user}`))
     : [];
@@ -6,52 +6,71 @@ export function Body({ products, cart, setCart, user }) {
   // state : Cart *used
   if (cart.length === 0 && stored_cart.length !== 0) setCart(stored_cart);
   return (
-    <main>
-      <div className="filters">
-        <label for="sort-by">Sort by:</label>
-        <select id="sort-by">
-          <option value="price">Sort by Price</option>
-          <option value="name">Sort by Name</option>
-        </select>
-      </div>
+    <div>
+      <section className="products">
+        {products
+          .filter(
+            (product) =>
+              (product.name.toLowerCase() || null).indexOf(
+                letters != null && letters.toLowerCase()
+              ) === 0
+          )
+          .map((product) => (
+            <Products
+              key={product.id}
+              product={product}
+              user={user}
+              cart={cart}
+              setCart={setCart}
+            />
+          ))}
 
-      {/* *********************products**************************/}
-      <Products products={products} cart={cart} setCart={setCart} user={user} />
-      <aside className="coupons">Coupons</aside>
-    </main>
+        {products
+          .filter(
+            (product) =>
+              (product.name.toLowerCase() || null).indexOf(
+                letters != null && letters.toLowerCase()
+              ) > 0
+          )
+          .map((product) => (
+            <Products
+              key={product.id}
+              product={product}
+              user={user}
+              cart={cart}
+              setCart={setCart}
+            />
+          ))}
+      </section>
+    </div>
   );
 }
 
-function Products({ products, cart, setCart, user }) {
+function Products({ product, user, cart, setCart }) {
   return (
-    <section className="products">
-      {products.map((product) => {
-        return (
-          <article className="product">
-            <div className="product-image">{product.image}</div>
+    <div>
+      <article className="product">
+        <div className="product-image">
+          <img src={product.image} alt={product.name} />
+        </div>
+        <div className="product-details">
+          <p className="price">${product.price}</p>
+          <button
+            onClick={() => {
+              localStorage.setItem(
+                `cart_${user}`,
+                JSON.stringify([...cart, product])
+              );
 
-            <div className="product-details">
-              <span>{product.name}</span>
-              <p className="price">{product.price}$</p>
+              // state : Cart *used
 
-              <button
-                onClick={() => {
-                  localStorage.setItem(
-                    `cart_${user}`,
-                    JSON.stringify([...cart, product])
-                  );
-
-                  // state : Cart *used
-
-                  setCart([...cart, product]);
-                }}
-              >
-                Add to Cart
-              </button>
-            </div>
-          </article>
-        );
-      })}
-    </section>
+              setCart([...cart, product]);
+            }}
+          >
+            Add to Cart
+          </button>
+        </div>
+      </article>
+    </div>
   );
 }
