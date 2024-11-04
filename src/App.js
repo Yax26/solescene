@@ -13,24 +13,28 @@ function App() {
       name: "Jordan 1",
       image: "",
       price: 100,
+      quantity: 0,
     },
     {
       id: 2,
       name: "Nike air force",
       image: "",
       price: 200,
+      quantity: 0,
     },
     {
       id: 3,
       name: "New balance 7090",
       image: "",
       price: 150,
+      quantity: 0,
     },
     {
       id: 4,
       name: "Adidas Yeezy",
       image: "",
       price: 170,
+      quantity: 0,
     },
   ];
 
@@ -42,7 +46,7 @@ function App() {
 
   // state : cart
   const [cart, setCart] = useState([]);
-
+  console.log(cart);
   return (
     <div className="App">
       <Header

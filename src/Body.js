@@ -47,6 +47,32 @@ export function Body({ products, cart, setCart, user, letters }) {
 }
 
 function Products({ product, user, cart, setCart }) {
+  function DecreaseQuantity() {
+    const updatedCart = cart.map((cart_product) => ({
+      ...cart_product,
+      quantity:
+        cart_product.name === product.name
+          ? cart_product.quantity > 0
+            ? cart_product.quantity - 1
+            : cart_product.quantity
+          : cart_product.quantity,
+    }));
+    localStorage.setItem(`cart_${user}`, JSON.stringify(updatedCart));
+    return updatedCart;
+  }
+
+  function IncreaseQuantity() {
+    const updatedCart = cart.map((cart_product) => ({
+      ...cart_product,
+      quantity:
+        cart_product.name === product.name
+          ? cart_product.quantity + 1
+          : cart_product.quantity,
+    }));
+    localStorage.setItem(`cart_${user}`, JSON.stringify(updatedCart));
+    return updatedCart;
+  }
+
   return (
     <div>
       <article className="product">
@@ -55,20 +81,28 @@ function Products({ product, user, cart, setCart }) {
         </div>
         <div className="product-details">
           <p className="price">${product.price}</p>
+          <button onClick={() => setCart(() => DecreaseQuantity())}>-</button>
           <button
             onClick={() => {
-              localStorage.setItem(
-                `cart_${user}`,
-                JSON.stringify([...cart, product])
+              const productInCart = cart.find(
+                (cart_product) => cart_product.name === product.name
               );
 
-              // state : Cart *used
+              if (!productInCart) {
+                const updatedCart = [...cart, { ...product, quantity: 1 }];
+                localStorage.setItem(
+                  `cart_${user}`,
+                  JSON.stringify(updatedCart)
+                );
 
-              setCart([...cart, product]);
+                // set cart with updated quantity
+                setCart(updatedCart);
+              }
             }}
           >
             Add to Cart
           </button>
+          <button onClick={() => setCart(() => IncreaseQuantity())}>+</button>
         </div>
       </article>
     </div>
