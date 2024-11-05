@@ -46,7 +46,7 @@ function App() {
 
   // state : cart
   const [cart, setCart] = useState([]);
-  console.log(cart);
+  // console.log(cart);
   return (
     <div className="App">
       <Header

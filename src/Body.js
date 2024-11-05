@@ -47,20 +47,35 @@ export function Body({ products, cart, setCart, user, letters }) {
 }
 
 function Products({ product, user, cart, setCart }) {
+  // check that product is in the cart on not
+  const cartProduct = cart.find(
+    (cart_product) => cart_product.name === product.name
+  );
+
+  //decrease product quantity when hit - button and if quantity == 0 then remove the product from the cart
   function DecreaseQuantity() {
-    const updatedCart = cart.map((cart_product) => ({
-      ...cart_product,
-      quantity:
-        cart_product.name === product.name
-          ? cart_product.quantity > 0
-            ? cart_product.quantity - 1
-            : cart_product.quantity
-          : cart_product.quantity,
-    }));
+    const updatedCart = cart
+      .map((cart_product) => ({
+        ...cart_product,
+        quantity:
+          cart_product.name === product.name
+            ? cart_product.quantity > 0
+              ? cart_product.quantity - 1
+              : cart_product.quantity
+            : cart_product.quantity,
+      }))
+      .filter((cart_product) => cart_product.quantity > 0);
     localStorage.setItem(`cart_${user}`, JSON.stringify(updatedCart));
-    return updatedCart;
+
+    // updating local storage
+    localStorage.setItem(`cart_${user}`, JSON.stringify(updatedCart));
+
+    //set cart cart for decreased quantity
+    // state : Cart *used
+    setCart(updatedCart);
   }
 
+  // increase the product quantity when hit + button
   function IncreaseQuantity() {
     const updatedCart = cart.map((cart_product) => ({
       ...cart_product,
@@ -70,7 +85,25 @@ function Products({ product, user, cart, setCart }) {
           : cart_product.quantity,
     }));
     localStorage.setItem(`cart_${user}`, JSON.stringify(updatedCart));
-    return updatedCart;
+
+    // set cart for increased quantity
+    // state : Cart *used
+    setCart(updatedCart);
+  }
+
+  // Add product to the cart
+  function handleAddToCart() {
+    const productInCart = cart.find(
+      (cart_product) => cart_product.name === product.name
+    );
+
+    if (!productInCart) {
+      const updatedCart = [...cart, { ...product, quantity: 1 }];
+      localStorage.setItem(`cart_${user}`, JSON.stringify(updatedCart));
+
+      // state : Cart *used
+      setCart(updatedCart);
+    }
   }
 
   return (
@@ -81,28 +114,22 @@ function Products({ product, user, cart, setCart }) {
         </div>
         <div className="product-details">
           <p className="price">${product.price}</p>
-          <button onClick={() => setCart(() => DecreaseQuantity())}>-</button>
-          <button
-            onClick={() => {
-              const productInCart = cart.find(
-                (cart_product) => cart_product.name === product.name
-              );
 
-              if (!productInCart) {
-                const updatedCart = [...cart, { ...product, quantity: 1 }];
-                localStorage.setItem(
-                  `cart_${user}`,
-                  JSON.stringify(updatedCart)
-                );
+          {cartProduct ? (
+            <button onClick={() => DecreaseQuantity()}>-</button>
+          ) : (
+            ""
+          )}
 
-                // set cart with updated quantity
-                setCart(updatedCart);
-              }
-            }}
-          >
-            Add to Cart
+          <button onClick={() => handleAddToCart()}>
+            {cartProduct ? `Quantity: ${cartProduct.quantity}` : "Add to Cart"}
           </button>
-          <button onClick={() => setCart(() => IncreaseQuantity())}>+</button>
+
+          {cartProduct ? (
+            <button onClick={() => IncreaseQuantity()}>+</button>
+          ) : (
+            ""
+          )}
         </div>
       </article>
     </div>
