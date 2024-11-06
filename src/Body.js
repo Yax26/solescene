@@ -1,4 +1,8 @@
+import { useState } from "react";
+
 export function Body({ products, cart, setCart, user, letters }) {
+  // state DisplayProducts
+  const [displayProducts, setDisplayProducts] = useState(products);
   const stored_cart = JSON.parse(localStorage.getItem(`cart_${user}`))
     ? JSON.parse(localStorage.getItem(`cart_${user}`))
     : [];
@@ -7,45 +11,64 @@ export function Body({ products, cart, setCart, user, letters }) {
   if (cart.length === 0 && stored_cart.length !== 0) setCart(stored_cart);
   return (
     <div>
-      <section className="products">
-        {products
-          .filter(
-            (product) =>
-              (product.name.toLowerCase() || null).indexOf(
-                letters != null && letters.toLowerCase()
-              ) === 0
-          )
-          .map((product) => (
-            <Products
-              key={product.id}
-              product={product}
-              user={user}
-              cart={cart}
-              setCart={setCart}
-            />
-          ))}
+      {/* products filter */}
+      <Filters
+        setDisplayProducts={setDisplayProducts}
+        products={displayProducts}
+        originalProducts={products}
+      ></Filters>
 
-        {products
-          .filter(
-            (product) =>
-              (product.name.toLowerCase() || null).indexOf(
-                letters != null && letters.toLowerCase()
-              ) > 0
-          )
-          .map((product) => (
-            <Products
-              key={product.id}
-              product={product}
-              user={user}
-              cart={cart}
-              setCart={setCart}
-            />
-          ))}
-      </section>
+      {/* products render */}
+      <Search
+        products={displayProducts}
+        letters={letters}
+        user={user}
+        cart={cart}
+        setCart={setCart}
+      ></Search>
     </div>
   );
 }
 
+function Search({ products, letters, user, cart, setCart }) {
+  return (
+    <section className="products">
+      {products
+        .filter(
+          (product) =>
+            (product.name.toLowerCase() || null).indexOf(
+              letters != null && letters.toLowerCase()
+            ) === 0
+        )
+        .map((product) => (
+          <Products
+            key={product.id}
+            product={product}
+            user={user}
+            cart={cart}
+            setCart={setCart}
+          />
+        ))}
+
+      {products
+        .filter(
+          (product) =>
+            (product.name.toLowerCase() || null).indexOf(
+              letters != null && letters.toLowerCase()
+            ) > 0
+        )
+        .map((product) => (
+          <Products
+            key={product.id}
+            product={product}
+            user={user}
+            cart={cart}
+            setCart={setCart}
+          />
+        ))}
+    </section>
+  );
+}
 function Products({ product, user, cart, setCart }) {
   // check that product is in the cart on not
   const cartProduct = cart.find(
@@ -132,6 +155,87 @@ function Products({ product, user, cart, setCart }) {
           )}
         </div>
       </article>
+    </div>
+  );
+}
+
+function Filters({ products, setDisplayProducts, originalProducts }) {
+  const sortbyAscending = () => {
+    //console.log("lowest");
+    const sorted = [...products].sort((a, b) => a.price - b.price);
+    //console.log(sorted);
+    setDisplayProducts(sorted);
+  };
+
+  const sortbyDescending = () => {
+    //console.log("highest");
+    const sorted = [...products].sort((a, b) => b.price - a.price);
+    // console.log(sorted);
+    setDisplayProducts(sorted);
+  };
+
+  // sorting function will arrange the items according to the objrct(products)
+  const Sorting = () => {
+    const sorted = (products = products);
+    setDisplayProducts(sorted);
+  };
+
+  const sortbyBrand = (brand) => {
+    const sorted = originalProducts.filter(
+      (product) => product.brand === brand
+    );
+    setDisplayProducts(sorted);
+  };
+  const allBrands = () => {
+    setDisplayProducts(originalProducts);
+  };
+
+  return (
+    <div className="filters">
+      <div className="dropdown">
+        <button onClick={Sorting}>Filter :</button>
+        <div className="dropdown-content">
+          <div className="nested-dropdown">
+            <a href="#">Sort by Price</a>
+            <div className="nested-dropdown-content">
+              <a href="#" onClick={sortbyDescending}>
+                High to Low
+              </a>
+              <br />
+              <br />
+              <a href="#" onClick={sortbyAscending}>
+                Low to High
+              </a>
+            </div>
+          </div>
+          ------
+          <div className="nested-dropdown">
+            <a href="#" onClick={sortbyBrand}>
+              Sort by Brand
+            </a>
+            <div className="nested-dropdown-content">
+              <a href="#" onClick={allBrands}>
+                all brands
+              </a>
+              <br />
+              <br />
+              <br />
+              {originalProducts.map((product) => (
+                <div key={product.brand}>
+                  <a href="#" onClick={() => sortbyBrand(product.brand)}>
+                    {product.brand}
+                  </a>
+                  <br />
+                  <br />
+                  <br />
+                </div>
+              ))}
+              <br></br>
+            </div>
+          </div>
+          ------
+        </div>
+      </div>
     </div>
   );
 }

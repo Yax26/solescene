@@ -14,6 +14,7 @@ function App() {
       image: "",
       price: 100,
       quantity: 0,
+      brand: "Jordan",
     },
     {
       id: 2,
@@ -21,6 +22,7 @@ function App() {
       image: "",
       price: 200,
       quantity: 0,
+      brand: "Nike",
     },
     {
       id: 3,
@@ -28,6 +30,7 @@ function App() {
       image: "",
       price: 150,
       quantity: 0,
+      brand: "New balance",
     },
     {
       id: 4,
@@ -35,6 +38,7 @@ function App() {
       image: "",
       price: 170,
       quantity: 0,
+      brand: "Adidas",
     },
   ];
 
